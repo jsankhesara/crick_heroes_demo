@@ -1,0 +1,29 @@
+{
+  "name": "crick_heroes_demo",
+  "version": "1.0.0",
+  "description": "gitPath = git clone https://github.com/jsankhesara/OpenXCellDemo_2.git\r Install package = npm install\r Start Node Js Application = nodemon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsankhesara/crick_heroes_demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsankhesara/crick_heroes_demo/issues"
+  },
+  "homepage": "https://github.com/jsankhesara/crick_heroes_demo#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "monc": "^0.1.2",
+    "mongoose": "^5.13.7",
+    "mongoose-autopopulate": "^0.14.0",
+    "nodemon": "^2.0.12"
+  }
+}

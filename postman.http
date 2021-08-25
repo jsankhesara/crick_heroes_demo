@@ -1,0 +1,17 @@
+@URL = http://localhost:3001
+
+###
+POST {{URL}}/api/tournament/updatePosition HTTP/1.1
+Content-Type: application/json; charset=utf-8
+
+{
+  "team_id_bat":"611f7eeb07fbf43fc47c4e06",
+  "team_id_bowl":"611f7ec7046b3142f845bdb5",
+  "runs":120,
+  "ballPlayed":120,
+  "selectedTeamBat":true
+}
+
+###
+GET  {{URL}}/api/tournament/getTournamentTeamsList HTTP/1.1
+Content-Type: application/json; charset=utf-8
