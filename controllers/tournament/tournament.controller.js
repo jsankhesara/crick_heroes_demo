@@ -12,18 +12,22 @@ exports.updatePosition = async function (req, res) {
     let remainder = minBowling % 6;
     let convertOver = parseFloat(quotient + "." + remainder);
 
-
     if (req.body.selectedTeamBat) {
         let fetchBattingTeamData = await TournamentModel.findOne({ _id: team_bat });
         fetchBattingTeamData.totalRunMade = fetchBattingTeamData.totalRunMade + runs;
         fetchBattingTeamData.totalOversPlayed = fetchBattingTeamData.totalOversPlayed + ballPlayed;
         fetchBattingTeamData.totalOversBowled = fetchBattingTeamData.totalOversBowled + convertOver;
+        fetchBattingTeamData.won = fetchBattingTeamData.won + 1;
+        fetchBattingTeamData.points = fetchBattingTeamData.points + 2;
+        fetchBattingTeamData.matchCount = fetchBattingTeamData.matchCount + 1;
         fetchBattingTeamData.save();
 
         let fetchBowlingTeamData = await TournamentModel.findOne({ _id: team_bowl });
         fetchBowlingTeamData.totalRunGive = fetchBowlingTeamData.totalRunGive + runs;
         fetchBowlingTeamData.totalOversBowled = fetchBowlingTeamData.totalOversBowled + ballPlayed;
         fetchBowlingTeamData.totalOversPlayed = fetchBowlingTeamData.totalOversPlayed + convertOver;
+        fetchBowlingTeamData.lost = fetchBowlingTeamData.lost + 1;
+        fetchBowlingTeamData.matchCount = fetchBowlingTeamData.matchCount + 1;
         fetchBowlingTeamData.save();
 
         var runsNumber = config.run_number;
@@ -59,6 +63,8 @@ exports.updatePosition = async function (req, res) {
             if (fetchBattingTeamDataUpdate.nrr > fetchBowlingTeamDataUpdate.nrr) {
                 finalObj.runEnd = i;
                 finalObj.runStart = 1;
+                finalObj.battingTeamNrr = fetchBattingTeamDataUpdate;
+                finalObj.bowlingTeamNrr = fetchBowlingTeamDataUpdate;
                 resHandlerService.handleResult(res, finalObj, "Position updated");
                 break;
             }
@@ -66,14 +72,19 @@ exports.updatePosition = async function (req, res) {
     } else {
         let fetchBattingTeamData = await TournamentModel.findOne({ _id: team_bat });
         fetchBattingTeamData.totalRunMade = fetchBattingTeamData.totalRunMade + runs;
-        fetchBattingTeamData.totalOversPlayed = fetchBattingTeamData.totalOversPlayed + oversPlayedBatting;
+        fetchBattingTeamData.totalOversPlayed = fetchBattingTeamData.totalOversPlayed + ballPlayed;
         fetchBattingTeamData.totalRunGive = fetchBattingTeamData.totalRunGive + runs + 1;
+        fetchBattingTeamData.lost = fetchBattingTeamData.lost + 1;
+        fetchBattingTeamData.matchCount = fetchBattingTeamData.matchCount + 1;
         fetchBattingTeamData.save();
 
         let fetchBowlingTeamData = await TournamentModel.findOne({ _id: team_bowl });
         fetchBowlingTeamData.totalRunGive = fetchBowlingTeamData.totalRunGive + runs;
-        fetchBowlingTeamData.totalOversBowled = fetchBowlingTeamData.totalOversBowled + oversPlayedBatting;
+        fetchBowlingTeamData.totalOversBowled = fetchBowlingTeamData.totalOversBowled + ballPlayed;
         fetchBowlingTeamData.totalRunMade = fetchBowlingTeamData.totalRunMade + runs + 1;
+        fetchBowlingTeamData.won = fetchBowlingTeamData.won + 1;
+        fetchBowlingTeamData.points = fetchBowlingTeamData.points + 2;
+        fetchBowlingTeamData.matchCount = fetchBowlingTeamData.matchCount + 1;
         fetchBowlingTeamData.save();
 
         var overNumber = config.bowl_played;
@@ -112,7 +123,8 @@ exports.updatePosition = async function (req, res) {
                 let convertOverBowl = parseFloat(quotientBowl + "." + remainderBowl);
                 finalObj.overEnd = convertOverBowl
                 finalObj.overStart = 1;
-                finalObj.oversNumber = oversPlayedBowling;
+                finalObj.battingTeamNrr = fetchBattingTeamDataUpdate;
+                finalObj.bowlingTeamNrr = fetchBowlingTeamDataUpdate;
                 resHandlerService.handleResult(res, finalObj, "Position updated");
                 break;
             }
