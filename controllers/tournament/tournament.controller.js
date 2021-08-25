@@ -133,6 +133,6 @@ exports.updatePosition = async function (req, res) {
 }
 
 exports.getTournamentTeamsList = async function (req, res) {
-    let fetchTeamData = await TournamentModel.find();
+    let fetchTeamData = await TournamentModel.find().sort({ "points":-1,"nrr":-1 ,})
     resHandlerService.handleResult(res, fetchTeamData, "Tournament Team list");
 }
