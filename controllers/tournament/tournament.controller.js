@@ -6,12 +6,13 @@ exports.updatePosition = async function (req, res) {
     let team_bowl = req.body.team_id_bowl;
     let team_bat = req.body.team_id_bat;
     let runs = req.body.runs;
-    let ballPlayed = req.body.ballPlayed / 6;
-    let minBowling = (runs / 6 + config.bowl_played) / 2;
+    let ballPlayed = req.body.ballPlayed / 6; // convert ball to over
+    let minBowling = (runs / 6 + config.bowl_played) / 2; // finidinf min and max bowling ratio
     let quotient = Math.floor(minBowling / 6);
     let remainder = minBowling % 6;
-    let convertOver = parseFloat(quotient + "." + remainder);
+    let convertOver = parseFloat(quotient + "." + remainder); // convert ball to over 
 
+    // if treacerous bat first 
     if (req.body.selectedTeamBat) {
         let fetchBattingTeamData = await TournamentModel.findOne({ _id: team_bat });
         fetchBattingTeamData.totalRunMade = fetchBattingTeamData.totalRunMade + runs;
@@ -70,6 +71,7 @@ exports.updatePosition = async function (req, res) {
             }
         }
     } else {
+        // if treacerous bowl first 
         let fetchBattingTeamData = await TournamentModel.findOne({ _id: team_bat });
         fetchBattingTeamData.totalRunMade = fetchBattingTeamData.totalRunMade + runs;
         fetchBattingTeamData.totalOversPlayed = fetchBattingTeamData.totalOversPlayed + ballPlayed;
