@@ -66,6 +66,7 @@ exports.updatePosition = async function (req, res) {
                 finalObj.runStart = 1;
                 finalObj.battingTeamNrr = fetchBattingTeamDataUpdate;
                 finalObj.bowlingTeamNrr = fetchBowlingTeamDataUpdate;
+                finalObj.overs = convertOver;
                 resHandlerService.handleResult(res, finalObj, "Position updated");
                 break;
             }
